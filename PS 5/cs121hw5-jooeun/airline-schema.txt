@@ -1,0 +1,54 @@
+Write the relational model schema for your airline database in this file, using
+the notation we have used all term.  You can indicate primary key columns by
+enclosing the attribute names in _ characters.  Include descriptions of other
+candidate keys or foreign keys (if any) immediately under each relation schema.
+Example:
+
+foo(_a_, b, c)
+ * b is also a candidate key
+ * c is a foreign key to bar.c
+------------------------------------------------------------------------------
+
+-- [Problem 4]
+
+aircraft(_aircraft_code_, company, model)
+ * (company, model) is also a candidate key
+
+flight(_flight_number_, _flight_date_, flight_time, src_airport, dest_airport, is_domestic, aircraft_code)
+ * aircraft_code is a foreign key to aircraft.aircraft_code
+ * The 'uses' relationship-set is a many-to-one relationship with total participation on the many side. The relationship-set was combined with the flight entity-set because they share the same primary key (_flight_number_, _flight_date_), and this schema combination reduces the number of foreign key constraints and relations.
+
+seat(_aircraft_code_, _seat_number_, seat_class, seat_type, is_exit)
+ * aircraft_code is a foreign key to aircraft.aircraft_code
+
+customer(_cust_id_, first_name, last_name, email)
+ * (email is also a candidate key if the airline requires that each customer have a unique email)
+
+cust_phone(_cust_id_, _phone_number_)
+ * cust_id is a foreign key to customer.cust_id
+
+purchaser(_cust_id_, card_number, exp_date, verif_code)
+ * cust_id is a foreign key to customer.cust_id
+
+traveler(_cust_id_, passport_number, country, emergency_name, emergency_phone, freq_fly_num)
+ * cust_id is a foreign key to customer.cust_id
+
+purchase(_purchase_id_, purchase_date, confirm_number, cust_id)
+ * confirm_number is also a candidate key
+ * cust_id is a foreign key to purchaser.cust_id
+ * The 'bought' relationship-set is a many-to-one relationship with total participation on the many side. The relationship-set was combined with the purchase entity-set because they share the same primary key (_purchase_id_), and this schema combination reduces the number of foreign key constraints and relations.
+
+ticket(_ticket_id_, price, purchase_id, cust_id)
+ * purchase_id is a foreign key to purchase.purchase_id
+ * cust_id is a foreign key to traveler.cust_id
+ * The 'ticket_purchase' and 'ticket_traveler' relationship-sets are many-to-one relationships with total participation on both sides (many side total participation is easy to enforce after schema combination). The relationship-sets was combined with the ticket entity-set because they share the same primary key (_ticket_id_), and this schema combination reduces the number of foreign key constraints and relations.
+
+ticket_info(_flight_number_, _flight_date_, _aircraft_code_, _seat_number_, ticket_id)
+ * flight_number is a foreign key to flight.flight_number
+ * flight_date is a foreign key to flight.flight_date
+ * aircraft_code is a foreign key to aircraft.aircraft_code
+ * seat_number is a foreign key to seat.seat_number
+ * ticket_id is a foreign key to ticket.ticket_id
+ * ticket_id is also a candidate key
+
+

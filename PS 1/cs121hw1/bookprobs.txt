@@ -1,0 +1,66 @@
+-- [Problem 2.5a]
+PI[person_name](SIGMA[company_name="First Bank Corporation"](works));
+
+
+-- [Problem 2.5b]
+PI[person_name, city](employee BOWTIE SIGMA[company_name="First Bank Corporation"](works));
+
+
+-- [Problem 2.5c]
+PI[person_name, street, city](employee BOWTIE SIGMA[company_name="First Bank Corporation" AND salary > 10000](works));
+
+
+-- [Problem 2.5d]
+PI[person_name](employee BOWTIE works BOWTIE company);
+
+
+-- [Problem 2.5e]
+company DIVIDE PI[city](SIGMA[company_name="Small Bank Corporation"](company));
+
+
+-- [Problem 2.6a]
+--Natural join requires that both left and right relations have a matching tuple, meaning Jackson has to appear in both customer and (borrower BOWTIE loan), but Jackson is not in the customer relation.
+
+
+-- [Problem 2.6b]
+--We can add a tuple to the customer relation with customer_name = "Jackson" and customer_street and customer_city set to null values.
+
+
+-- [Problem 2.6c]
+PI[customer_name, customer_city](customer RBOWTIE (borrower BOWTIE loan));
+
+
+-- [Problem 2.7a]
+works <- PI[person_name, company_name, (salary * 1.1)](SIGMA[company_name="First Bank Corporation"](works)) UNION SIGMA[company_name != "First Bank Corporation"](works);
+
+
+-- [Problem 2.7b]
+manager_salary <- PI[person_name, salary](manages BOWTIE works);
+manager_salary <- PI[person_name, (salary * 1.1)](SIGMA[salary * 1.1 <= 100000](manager_salary)) UNION PI[person_name, (salary * 1.03)](SIGMA[salary * 1.1 > 100000](manager_salary));
+works <- PI[person_name, company_name](works) BOWTIE manager_salary;
+
+
+-- [Problem 2.7c]
+works <- works MINUS SIGMA[company_name="Small Bank Corporation"](works);
+
+
+-- [Problem 2.8a]
+PI[account_number](SIGMA[customer_count > 2]([account_number]GROUP[count(customer_name) AS customer_count](depositor)));
+
+
+-- [Problem 2.8b]
+PI[account_number](SIGMA[customer_name != customer_name_1 AND customer_name_1 != customer_name_2 AND customer_name_2 != customer_name](depositor BOWTIE RHO[temp1(customer_name_1, account_number)](depositor) BOWTIE RHO[temp2(customer_name_2, account_number)](depositor)));
+
+
+-- [Problem 2.9a]
+company_employee_count <- [company_name]GROUP[count(person_name) AS employee_count](company BOWTIE works);
+PI[company_name](SIGMA[employee_count = max_count](company_employee_count CROSS GROUP[max(employee_count) as max_count](company_employee_count)));
+
+
+-- [Problem 2.9b]
+company_payroll <- [company_name]GROUP[sum(salary) as payroll](company BOWTIE works);
+PI[company_name](SIGMA[payroll=min_payroll](company_payroll CROSS GROUP[min(payroll) as min_payroll](company_payroll)));
+
+
+-- [Problem 2.9c]
+PI[company_name](SIGMA[avg_salary > fbc_salary]([company_name]GROUP[avg(salary) AS avg_salary](works) CROSS GROUP[avg(salary) AS fbc_salary](SIGMA[company_name="First Bank Corporation"](works))));

@@ -1,0 +1,73 @@
+You can put your answers for Problem 1.2 in this file.
+
+ * You can write explanatory text as plain-text without any kind of comment
+   markup.
+
+ * Keep all lines to 80 characters or less!
+
+ * When writing relation schemas, you can indicate primary-key attributes
+   by enclosing them with asterisks, e.g. R1(*A*, B, C), R2(*C*, D)
+
+ * Don't forget that primary key attributes should always come first
+   when writing relation schemas
+
+-------------------------------------------------------------------------------
+
+server(*hostname*, os_type, max_num_sites, server_type)
+
+shared_server(*hostname*, server_type)
+ * (hostname, server_type) is a foreign key to
+   (server.hostname, server.sever_type)
+
+dedicated_server(*hostname*, server_type)
+ * (hostname, server_type) is a foreign key to
+   (server.hostname, server.sever_type)
+
+
+account(*username*, email, url, time_joined, subs_price, acct_type)
+ * url is also a candidate key
+
+
+Since every basic account must be associated with exactly one shared server,
+it makes sense to combine the basic_acct entity-set and the hosts relationship-
+set. Enforcing the total participation of basic_acct entities in the holds
+relationship-set becomes easier by using a NOT NULL constraint on hostname.
+
+basic_acct(*username*, acct_type, hostname)
+ * (username, acct_type) is a foreign key to
+   (account.username, account.acct_type)
+ * hostname is a foreign key to shared_server.hostname
+ * NOT NULL constraint on hostname to enforce total participation of basic_acct
+   entities in the holds relationship-set
+
+
+Likewise, since every preferred acount must be associated with exactly one
+dedicated server, it makes sense to combine the preferred_acct entity-set and
+the only_hosts relationship-set. Enforcing the total participation of
+preferred_acct entities in the only_holds relationship-set becomes easier by
+using a NOT NULL constraint on hostname. In addition, since every dedicated
+server must be associated with at most one preferred account, hostname is
+also a candidate key.
+
+preferred_acct(*username*, acct_type, hostname)
+ * (username, acct_type) is a foreign key to
+   (account.username, account.acct_type)
+ * hostname is a foreign key to dedicated_server.hostname
+ * hostname is also a candidate key
+ * NOT NULL constraint on hostname to enforce total participation of
+   preferred_acct entities in the only_holds relationship-set.
+
+
+package(*package_name*, *version*, description, package_price)
+
+requests(username, package_name, version)
+ * username is a foreign key to account.username
+ * (package_name, version) is a foreign key to
+   (package.package_name, package.version)
+ * (username, package_name, version) is the primary key
+
+installed_on(package_name, version, hostname)
+ * (package_name, version) is a foreign key to
+   (package.package_name, package.version)
+ * hostname is a foreign key to server.hostname
+ * (package_name, version, hostname) is the primary key

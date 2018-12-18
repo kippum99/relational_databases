@@ -1,0 +1,73 @@
+<html><head>
+<style>
+div.answer {
+    padding-left: 20pt;
+    padding-bottom: 12pt;
+}
+
+div.comment {
+    padding-left: 4pt;
+    padding-bottom: 12pt;
+}
+
+div.errors {
+    border: 1px solid red;
+    margin-top: 12pt;
+    margin-left: 4pt;
+    padding-left: 4pt;
+    color: red;
+    font-weight: bold;
+}
+
+.relvar {
+    font-style: italic;
+}
+
+.attr_name {
+    font-style: italic;
+}
+
+.group_operator {
+    font-family: Lucida Calligraphy;
+}
+
+.func_name {
+    font-weight: bold;
+}
+
+.operator {
+}
+
+.string {
+    color: #007F00;
+}
+
+.number {
+    color: #0000FF;
+}
+
+</style>
+</head><body>
+<h1>File:  equivalence.txt</h1>
+<h2 id='Problem 1a'>Problem 1a</h2>
+<div class='comment'>
+Yes. Since THETA uses only attributes from A, applying SIGMA[THETA] after the grouping will be the same as applying SIGMA[THETA] before the grouping, as the grouping would not result in loss in any information that THETA would be using to apply selection.
+</div>
+<h2 id='Problem 1b'>Problem 1b</h2>
+<div class='comment'>
+No. Consider r(a, b) = {(1, 2)} and s(a, b) = {(1, 3)}. PI[a](r MINUS s) would produce {(1)}, whereas PI[a](r) MINUS PI[a](s) would produce an empty set.
+</div>
+<h2 id='Problem 1c'>Problem 1c</h2>
+<div class='comment'>
+No. Consider r(a, b1) = {(1, 2)}, s(a, b2) = {(3, 4)}, and t(a, b3) = {(1, 3)}. The first expression would produce {(1, 2, null 3)}, while the second expression would produce {(1, 2, null, null)}.
+</div>
+<h2 id='Problem 1d'>Problem 1d</h2>
+<div class='comment'>
+Yes. Since THETA is a predicate using only attributes from r, applying SIGMA[THETA] to (r LBOWTIE s) would only be based on what r has. Selecting tuples that satisfy THETA from r first, then left joining with s obviously results in SIGMA[THETA] only choosing tuples based on what r has, but as mentioned earlier, selecting tuples that satisfy THETA from (r LBOWTIE s) also results in only choosing tuples based on what r has. And the LBOWTIE, regardless of the order of operation, will make sure that r has all of its rows selected by the SIGMA function in either case.
+</div>
+<h2 id='Problem 1e'>Problem 1e</h2>
+<div class='comment'>
+No. Consider r(a, b) = {(1, 2), (2, 3)} and s(b, c) = {(2, 3), (3, 4)}. If THETA is c=3, The first expression would produce {(1, 2, 3)}, while the second expression would produce {(1, 2, 3), (2, 3, null)}.
+</div>
+</body>
+</html>

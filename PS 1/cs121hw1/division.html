@@ -1,0 +1,69 @@
+<html><head>
+<style>
+div.answer {
+    padding-left: 20pt;
+    padding-bottom: 12pt;
+}
+
+div.comment {
+    padding-left: 4pt;
+    padding-bottom: 12pt;
+}
+
+div.errors {
+    border: 1px solid red;
+    margin-top: 12pt;
+    margin-left: 4pt;
+    padding-left: 4pt;
+    color: red;
+    font-weight: bold;
+}
+
+.relvar {
+    font-style: italic;
+}
+
+.attr_name {
+    font-style: italic;
+}
+
+.group_operator {
+    font-family: Lucida Calligraphy;
+}
+
+.func_name {
+    font-weight: bold;
+}
+
+.operator {
+}
+
+.string {
+    color: #007F00;
+}
+
+.number {
+    color: #0000FF;
+}
+
+</style>
+</head><body>
+<h1>File:  division.txt</h1>
+<h2 id='Problem 1a'>Problem 1a</h2>
+<div class='comment'>
+The Cartesian product of PI[R-S](r) and s only includes tuples in s for the attributes in S, meaning only apples, oranges, and bananas are in the result of the product. That means when checking for "remainders" by subtracting food in monkey_foods from food in the product, tofu is not going to be taken into account. Therefore tofu is not calculated as a  "remainder" and thus tuples with Guenter are considered to be evenly divided by food in monkey_foods, producing Guenter in the result of the division.
+</div>
+<h2 id='Problem 1b'>Problem 1b</h2>
+<div class='answer'>
+(<span class='relvar'>r</span> &divide; <span class='relvar'>s</span>) - &Pi;<sub><em>R</em> - <em>S</em></sub>(<span class='relvar'>r</span> &bowtie; (&Pi;<sub><span class='attr_name'>s</span></sub>(<span class='relvar'>r</span>) - <span class='relvar'>s</span>))
+</div>
+<div class='comment'>
+The book version r DIVIDE s produces the result of exact division along with extra tuples that contain values of attributes in S that are not in s. Thus we will find the values of attributes in S that are in r but not in s first, which is PI[s](r) MINUS s. r BOWTIE (PI[s](r) MINUS s) will give us tuples from r with the extra values of attributes in S not in s. We project this relation to R-S to get just the values of attributes in R-S for such tuples, which we then subtract from the result of (r DIVIDE s) to finally get rid of all the extra tuples containing values of attributes in S not in s. Then the result only produces the result of exact division.
+</div>
+<h2 id='Problem 1c'>Problem 1c</h2>
+<div class='comment'>
+PI[R MINUS S](SIGMA[r_count_s=count_s]([R MINUS S]GROUP[count(S) AS r_count_s](r BOWTIE s) CROSS GROUP[count(S) AS count_s](s)));
+We first evaluate r BOWTIE s, which would give r without tuples with values of attributes in S not in s (i.e. get rid of (Guenter, tofu)). Assuming the function count distributes if S has multiple attributes, (i.e. if S=(a1, a2), count(S)=(count(a1), count(a2)), we group r BOWTIE s on attributes in R MINUS S and count the number of values of attributes in S. If that count is the same as the count of all tuples in s, then the corresponding group will be in the result of this division function.
+</div>
+</body>
+</html>

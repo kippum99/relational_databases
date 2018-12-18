@@ -1,0 +1,58 @@
+You can put your answers for Problem 4 in this file.  Follow this notation for
+writing your answers in text format:
+
+ * You can write functional dependencies as A -> B
+
+ * You can write a set of functional dependencies as { A -> BC, C -> D }
+
+ * You can write attribute-set closure as {A}+ etc.
+
+ * You can write multivalued dependencies as A ->> B
+
+ * You can write explanatory text as plain-text without any kind of comment
+   markup.
+
+ * Keep all lines to 80 characters or less!
+
+ * When writing relation schemas, you can indicate primary-key attributes
+   by enclosing them with asterisks, e.g. R1(*A*, B, C), R2(*C*, D)
+
+ * Don't forget that primary key attributes should always come first
+   when writing relation schemas
+
+-- [Problem 4a]
+customer(*cust_id*, cust_address, cust_phone)
+
+order(*order_id*, cust_id, order_time)
+ * The cust_id attribute has a foreign key reference to customer.cust_id.
+
+pizza(*pizza_id*, order_id, pizza_size)
+ * The order_id attribute has a foreign key reference to order.order_id.
+
+pizza_toppings(*pizza_id*, *topping*)
+ * The pizza_id attribute has a foreign key reference to pizza.pizza_id.
+ * Explicitly indicating the primary key, which is the entire schema, is
+   unnecessary because a relation is a set in relational model. The two
+   attributes form the primary key in SQL.
+
+
+** Note that:
+  * The customer schema is obviously in 4NF since it is also in BCNF.
+  * The order schema is obviously in 4NF since it is also in BCNF.
+  * The pizza schema is obviously in 4NF since it is also in BCNF.
+  * The pizza_toppings schema is in 4NF since the only multivalued dependency
+    pizza_id ->> topping is trivial on this relation.
+
+
+-- [Problem 4b]
+No, it is not possible. Consider the schemas from part a, which is in BCNF
+and 4NF.
+We can't add pizza_id or toppings to one of the 3 schemas already in BCNF
+form because that would make
+the dependencies that were originally trival are not trivial (since they won't
+be superkey, as they don't functionally determine pizza_id or toppings). Thus
+they won't be in BCNF.
+We can't add attributes from one of the 3 schemas into the pizza_toppings schema
+because pizza_id functionally determining other attributes can be inferred,
+meaning it will not be in BCNF. Therefore there is no change we can make to make
+the schema in BCNF but not in 4NF.
